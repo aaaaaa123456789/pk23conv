@@ -1,0 +1,3 @@
+[submodule "libsrng"]
+	path = libsrng
+	url = git@github.com:aaaaaa123456789/libsrng.git

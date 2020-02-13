@@ -24,15 +24,15 @@ char * generate_string_from_varargs (const char * fmt, va_list varargs) {
   return result;
 }
 
-unsigned long long get_initial_random_seed (const void * data, unsigned length) {
+uint64_t get_initial_random_seed (const void * data, unsigned length) {
   unsigned char * hash = calculate_sha1(data, length);
   unsigned p;
-  unsigned long long result = read_number_from_buffer(hash, 8);
+  uint64_t result = read_number_from_buffer(hash, 8);
   libsrng_random(&result, 1, 1);
   result ^= read_number_from_buffer(hash + 8, 8);
   libsrng_random(&result, 1, 1);
   p = read_number_from_buffer(hash + 16, 4);
-  result ^= ((unsigned long long) p << 32) | p;
+  result ^= ((uint64_t) p << 32) | p;
   free(hash);
   for (p = 0; p < 5; p ++) libsrng_random(&result, 0, 0);
   return result;

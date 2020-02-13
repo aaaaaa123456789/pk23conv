@@ -19,8 +19,8 @@
 char * convert_pk2_to_pk3(const unsigned char *, unsigned char *);
 unsigned calculate_IVs_from_DVs(unsigned short);
 char * convert_string_2_to_3(const unsigned char *, unsigned char *, unsigned);
-unsigned generate_personality_value(unsigned long long *, unsigned char, unsigned char, unsigned char);
-unsigned short generate_secret_OTID(unsigned long long *, unsigned, unsigned short, unsigned char);
+unsigned generate_personality_value(uint64_t *, unsigned char, unsigned char, unsigned char);
+unsigned short generate_secret_OTID(uint64_t *, unsigned, unsigned short, unsigned char);
 
 // main.c
 int main(int, char **);
@@ -29,7 +29,7 @@ int main(int, char **);
 char * duplicate_string(const char *);
 char * generate_string(const char * fmt, ...);
 char * generate_string_from_varargs(const char *, va_list);
-unsigned long long get_initial_random_seed(const void *, unsigned);
+uint64_t get_initial_random_seed(const void *, unsigned);
 unsigned long long read_number_from_buffer(const unsigned char *, unsigned char);
 unsigned long long read_big_endian_number(const unsigned char *, unsigned char);
 void write_number_to_buffer(unsigned char *, unsigned char, unsigned long long);

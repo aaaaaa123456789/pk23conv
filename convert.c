@@ -2,7 +2,7 @@
 
 char * convert_pk2_to_pk3 (const unsigned char * in, unsigned char * out) {
   memset(out, 0, PK3_SIZE);
-  unsigned long long random_state = get_initial_random_seed(in, PK2_SIZE);
+  uint64_t random_state = get_initial_random_seed(in, PK2_SIZE);
   if ((*in != 1) || (in[2] != 0xff)) return duplicate_string("invalid PK2 data");
   if ((in[1] != 0xfd) && (in[1] != in[3])) return generate_string("PK2 is an unstable hybrid (%hhu, %hhu)", in[1], in[3]);
   if ((in[3] > 251) || !in[3]) return generate_string("PK2 contains an invalid species (%hhu)", in[3]);
@@ -94,7 +94,7 @@ char * convert_string_2_to_3 (const unsigned char * in, unsigned char * out, uns
   return NULL;
 }
 
-unsigned generate_personality_value (unsigned long long * random_state, unsigned char species, unsigned char gender, unsigned char ability) {
+unsigned generate_personality_value (uint64_t * random_state, unsigned char species, unsigned char gender, unsigned char ability) {
   unsigned p, result;
   // first step: pick some bits to fix the gender and ability - positions to fill (marked with X): 000000xx000000xx000000xxxxxxxxxx
   if (species == UNOWN) {
@@ -132,7 +132,7 @@ unsigned generate_personality_value (unsigned long long * random_state, unsigned
   return result | (p << 10);
 }
 
-unsigned short generate_secret_OTID (unsigned long long * random_state, unsigned personality, unsigned short OTID, unsigned char shiny) {
+unsigned short generate_secret_OTID (uint64_t * random_state, unsigned personality, unsigned short OTID, unsigned char shiny) {
   OTID ^= personality ^ (personality >> 16);
   OTID &= 0xfff8; // the lower three bits don't matter
   if (shiny) return OTID | libsrng_random(random_state, 8, 0);

@@ -14,6 +14,7 @@
 
 #define MEW 151
 #define UNOWN 201
+#define EGG 253
 
 // convert.c
 char * convert_pk2_to_pk3(const unsigned char *, unsigned char *);

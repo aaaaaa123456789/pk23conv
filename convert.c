@@ -4,7 +4,7 @@ char * convert_pk2_to_pk3 (const unsigned char * in, unsigned char * out) {
   memset(out, 0, PK3_SIZE);
   uint64_t random_state = get_initial_random_seed(in, PK2_SIZE);
   if ((*in != 1) || (in[2] != 0xff)) return duplicate_string("invalid PK2 data");
-  if ((in[1] != 0xfd) && (in[1] != in[3])) return generate_string("PK2 is an unstable hybrid (%hhu, %hhu)", in[1], in[3]);
+  if ((in[1] != EGG) && (in[1] != in[3])) return generate_string("PK2 is an unstable hybrid (%hhu, %hhu)", in[1], in[3]);
   if ((in[3] > 251) || !in[3]) return generate_string("PK2 contains an invalid species (%hhu)", in[3]);
   out[32] = in[3]; // species
   write_number_to_buffer(out + 34, 2, item_map_2_to_3[in[4]]); // held item
@@ -20,7 +20,7 @@ char * convert_pk2_to_pk3 (const unsigned char * in, unsigned char * out) {
   for (p = 0; p < 5; p ++) out[56 + p] = square_root(read_big_endian_number(in + 14 + 2 * p, 2)); // each EV (converted from stat exp)
   out[61] = out[60]; // special defense EV is the same as special attack EV
   write_number_to_buffer(out + 72, 4, calculate_IVs_from_DVs(read_big_endian_number(in + 24, 2)) // converted DVs
-                                      + 0x40000000u * (in[1] == 0xfd) // egg flag
+                                      + 0x40000000u * (in[1] == EGG) // egg flag
                                       + 0x80000000u * libsrng_random(&random_state, 2, 0)); // alternate ability flag
   for (p = 0; p < 4; p ++) out[52 + p] = in[26 + p]; // PP
   out[41] = in[30]; // friendship
@@ -37,7 +37,7 @@ char * convert_pk2_to_pk3 (const unsigned char * in, unsigned char * out) {
     out[69] = 0xfe; // met location: trade
   char * error;
   if (error = convert_string_2_to_3(in + 51, out + 20, 7)) return error; // OT name
-  if (in[1] == 0xfd) {
+  if (in[1] == EGG) {
     memcpy(out + 8, (unsigned char []) {0x60, 0x6f, 0x8b, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}, 10); // katakana for "tamago" (egg)
     out[18] = 1;
     out[19] = 6; // language: special value for eggs

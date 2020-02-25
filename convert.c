@@ -127,7 +127,7 @@ unsigned generate_personality_value (uint64_t * random_state, unsigned char spec
   result |= (unsigned) (libsrng_random(random_state, 0x4000, 0) & 0x3f3f) << 18;
   // finally, ensure the result gets a neutral nature - pick one and manipulate the six remaining bits to make it have that nature
   p = (result % 25) - 6 * libsrng_random(random_state, 5, 0);
-  if (p >= 25) p -= 25; // underflow
+  if (p >= 25) p += 25; // underflow
   p += libsrng_random(random_state, 2 + (p < 13), 0) * 25;
   return result | (p << 10);
 }

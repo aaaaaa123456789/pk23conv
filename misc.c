@@ -59,12 +59,3 @@ void write_number_to_buffer (unsigned char * buffer, unsigned char length, unsig
     number >>= 8;
   }
 }
-
-unsigned char square_root (unsigned short value) {
-  // square roots the gen 1/2 way
-  if (value < 3) return value;
-  if (value > 64516) return 255;
-  unsigned char result;
-  for (result = 2; (result * result) < value; result ++);
-  return result;
-}

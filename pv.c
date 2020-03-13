@@ -45,6 +45,6 @@ unsigned short generate_secret_OTID (uint64_t * random_state, unsigned personali
   unsigned short result;
   do
     result = libsrng_random(random_state, 0, 0);
-  while ((result & 0xfff8) != OTID);
+  while ((result & 0xfff8) == OTID);
   return result;
 }
